@@ -5,7 +5,7 @@ use App\Http\Controllers\BlogController;
 
 
 Route::get('/', function () {
-    return view('index');
+    return view('welcome');
 });
 
 // Method 1

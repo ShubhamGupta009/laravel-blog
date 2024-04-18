@@ -39,7 +39,7 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        return "<h1>Show</h1>";
+        return view('blog.show');
         //show.blade.php
     }
 
@@ -48,7 +48,7 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        echo "<h1>Edit</h1>";
+        return view('blog.edit');;
         //edit.blade.php
     }
 
