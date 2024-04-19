@@ -12,7 +12,10 @@ class BlogController extends Controller
      */
     public function index()
     {
-        return view('blog.index');
+        $blogs = Blog::orderBy("created_at",'DESC')->get();
+        return view('blog.index',[
+            "blogs"=>$blogs
+        ]);
 
         //index.blade.php
     }
@@ -30,8 +33,14 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        echo "<h1>Store</h1>";
-        //store.blade.php
+        $data=$request->validate([
+            "title"=>"required",
+            "description"=>"required|string",
+        ]);
+        //Data insertion in Database
+        $data['user_id']=1;
+        Blog::create($data);
+        return to_route("blog.index")->with('success', 'Blog created Successfully');
     }
 
     /**
