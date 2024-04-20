@@ -12,7 +12,9 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::orderBy("created_at",'DESC')->get();
+        $blogs = Blog::query()
+        ->where("user_id",request()->user()->id)
+        ->orderBy("created_at",'DESC')->paginate(10); // default paginate value is 15 but we are passing 10 to show 10 records at once
         return view('blog.index',[
             "blogs"=>$blogs
         ]);
@@ -38,7 +40,7 @@ class BlogController extends Controller
             "description"=>"required|string",
         ]);
         //Data insertion in Database
-        $data['user_id']=1;
+        $data['user_id']=request()->user()->id;
         Blog::create($data);
         return to_route("blog.index")->with('success', 'Blog created Successfully');
     }
@@ -48,7 +50,7 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        return view('blog.show');
+        return view('blog.show',["blog"=>$blog]);
         //show.blade.php
     }
 
@@ -57,7 +59,7 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        return view('blog.edit');;
+        return view('blog.edit',["blog"=>$blog]);
         //edit.blade.php
     }
 
@@ -66,7 +68,12 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
-        echo "<h1>Update</h1>";
+        $data = $request->validate([
+            "title"=>"required",
+            "description"=>"required|string"
+        ]);
+        $blog->update($data);
+        return to_route('blog.show',$blog)->with("success","Blog Updated Successfully");
     }
 
     /**
@@ -74,6 +81,7 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-        echo "<h1>Destroy</h1>";
+        $blog->delete();
+        return to_route('blog.index')->with("success","Blog Deleted Successfully");
     }
 }

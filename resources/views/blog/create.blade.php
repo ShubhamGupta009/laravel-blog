@@ -1,4 +1,4 @@
-<x-layout>
+<x-app-layout>
     <div>
         <div class="container">
             <!-- @if($errors->any())
@@ -32,4 +32,4 @@
             <a href="{{ route('blog.index')}}" class="action-link view-link">Back</a>
         </div>
     </div>    
-</x-layout>
+</x-app-layout>

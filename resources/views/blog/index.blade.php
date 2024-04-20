@@ -1,4 +1,4 @@
-<x-layout>
+<x-app-layout>
     <div>
     <div class="container">
             <a href="{{route('blog.create')}}" class="create-blog-button">Create New Blog</a>
@@ -20,18 +20,22 @@
                         <td>{{$blog->description}}</td>
                         <td>{{$blog->created_at}}</td>
                         <td class="action-buttons">
-                            <a href="#" class="action-link view-link">View</a>
-                            <a href="#" class="action-link edit-link">Edit</a>
-                            <button onclick="return confirm('Are you sure want to delete?')"
+                            <a href="{{route('blog.show',$blog)}}" class="action-link view-link">View</a>
+                            <a href="{{route('blog.edit',$blog)}}" class="action-link edit-link">Edit</a>
+                            <form action="{{route('blog.destroy',$blog)}}" method="POST">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" onclick="return confirm('Are you sure want to delete?')"
                                 class="action-link delete-link">Delete</button>
+                            </form>
                         </td>
                         @endforeach
                     </tr>
                 </tbody>
             </table>
             <div class="pagination">
-
+                {{$blogs->links()}}
             </div>
         </div>
     </div>
-</x-layout>
+</x-app-layout>
